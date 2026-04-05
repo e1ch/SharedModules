@@ -58,7 +58,7 @@ public final class DownloadManager {
     private InputStream mResponseStream;
     private int mTotalLen = 0;
     private Uri mFileUri;
-    private static final long MAX_DOWN_TIME_MS = 60 * 1_000; // 1 minute
+    private static final long MAX_DOWN_TIME_MS = 5 * 60 * 1_000; // 5 minutes
     private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36";
     private static final String ACCEPT_CONTENT = "*/*";
     private final Map<String, String> mHeaders = new HashMap<>();
