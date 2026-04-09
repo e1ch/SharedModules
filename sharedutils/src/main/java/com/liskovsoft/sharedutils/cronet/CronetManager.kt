@@ -2,6 +2,7 @@ package com.liskovsoft.sharedutils.cronet
 
 import android.content.Context
 import com.liskovsoft.sharedutils.mylogger.Log
+import java.io.File
 import org.chromium.net.CronetEngine
 import org.chromium.net.ExperimentalCronetEngine
 import org.chromium.net.impl.NativeCronetProvider
@@ -23,12 +24,20 @@ object CronetManager {
             //    .build()
 
             try {
+                // Cache dir for QUIC cache support.
+                // NOTE: the caching is mainly intended to fix the bot guard check errors (e.g. auto-translated subtitles).
+                // More info: https://github.com/yuliskov/SharedModules/pull/11
+                val cacheDir = File(context.cacheDir, "StCronet")
+                cacheDir.mkdirs()
+
                 val builder = NativeCronetProvider(context).createBuilder()
 
                 builder
                     .enableQuic(true)
                     .enableHttp2(true)
                     .enableBrotli(true)
+                    .setStoragePath(cacheDir.absolutePath) // cache dir
+                    .enableHttpCache(CronetEngine.Builder.HTTP_CACHE_DISK_NO_HTTP, 2 * 1024 * 1024) // cache size
                     //.addQuicHint("youtube.com", 80, 80)
 
                 // Do these tweaks have negative side effects?
